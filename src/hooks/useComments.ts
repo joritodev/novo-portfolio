@@ -73,7 +73,7 @@ export default function useComments() {
         imageUrl,
       })
 
-      // instant UI update (tanpa nunggu realtime)
+      // atualização instantânea da interface (sem esperar pelo realtime)
       setComments((prev) => [newComment, ...prev])
     } catch (err) {
       console.log(err)

@@ -45,11 +45,11 @@ export default function ProjectDetailPage() {
 
   const handleDelete = async () => {
   const result = await Swal.fire({
-    title: "Hapus project?",
-    text: "Project yang dihapus tidak bisa dikembalikan.",
+    title: "Deletar projeto?",
+    text: "O projeto deletado não pode ser recuperado.",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Ya, Hapus",
+    confirmButtonText: "Sim, Deletar",
     cancelButtonText: "Batal",
     background: "#101010",
     color: "#fff",
@@ -65,7 +65,7 @@ export default function ProjectDetailPage() {
   if (!error) {
     await Swal.fire({
       title: "Berhasil!",
-      text: "Project berhasil dihapus.",
+      text: "Projeto deletado com sucesso.",
       icon: "success",
       timer: 1800,
       showConfirmButton: false,
@@ -77,7 +77,7 @@ export default function ProjectDetailPage() {
   } else {
     Swal.fire({
       title: "Gagal",
-      text: "Project gagal dihapus.",
+      text: "Erro ao deletar projeto.",
       icon: "error",
       background: "#101010",
       color: "#fff",
@@ -97,7 +97,7 @@ export default function ProjectDetailPage() {
 
     Swal.fire({
       title: "Berhasil",
-      text: "Project berhasil diperbarui.",
+      text: "Projeto atualizado com sucesso.",
       icon: "success",
       timer: 1800,
       showConfirmButton: false,
@@ -107,7 +107,7 @@ export default function ProjectDetailPage() {
   } else {
     Swal.fire({
       title: "Gagal",
-      text: "Update project gagal.",
+      text: "Erro ao atualizar projeto.",
       icon: "error",
       background: "#101010",
       color: "#fff",
@@ -117,7 +117,7 @@ export default function ProjectDetailPage() {
   if (!project)
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">
-        Loading...
+        Carregando...
       </div>
     );
 
@@ -205,7 +205,7 @@ export default function ProjectDetailPage() {
         className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition mb-6"
       >
         <ArrowLeft size={14} />
-        Back
+        Voltar
       </motion.button>
 
       {/* MAIN GRID */}
@@ -261,7 +261,7 @@ export default function ProjectDetailPage() {
               <div>
                 <p className="text-lg font-semibold">{tech.length}</p>
 
-                <p className="text-[11px] text-white/40">Total Technology</p>
+                <p className="text-[11px] text-white/40">Total de Tecnologias</p>
               </div>
             </motion.div>
 
@@ -276,7 +276,7 @@ export default function ProjectDetailPage() {
               <div>
                 <p className="text-lg font-semibold">{features.length}</p>
 
-                <p className="text-[11px] text-white/40">Main Features</p>
+                <p className="text-[11px] text-white/40">Principais Funcionalidades</p>
               </div>
             </motion.div>
           </div>
@@ -292,7 +292,7 @@ export default function ProjectDetailPage() {
                     live_url: e.target.value,
                   })
                 }
-                placeholder="Live Demo URL"
+                placeholder="URL de Demonstração ao Vivo"
                 className="bg-[#111] border border-white/10 rounded-xl px-4 py-3 w-full sm:w-[260px] outline-none text-sm"
               />
             ) : project.live_url ? (
@@ -302,12 +302,12 @@ export default function ProjectDetailPage() {
                 className="flex items-center justify-center sm:justify-start gap-2 px-4 py-3 rounded-xl bg-[#101010] border border-white/10 hover:bg-white/5 transition"
               >
                 <ExternalLink size={15} />
-                <span className="text-sm">Live Demo</span>
+                <span className="text-sm">Demonstração ao Vivo</span>
               </a>
             ) : (
               <div className="flex items-center justify-center sm:justify-start gap-2 px-4 py-3 rounded-xl bg-[#101010] border border-white/10 text-white/45">
                 <ExternalLink size={15} />
-                <span className="text-sm">No Link</span>
+                <span className="text-sm">Nenhum Link</span>
               </div>
             )}
 
@@ -320,7 +320,7 @@ export default function ProjectDetailPage() {
                     github_url: e.target.value,
                   })
                 }
-                placeholder="Github URL"
+                placeholder="URL do Github"
                 className="bg-[#111] border border-white/10 rounded-xl px-4 py-3 w-full sm:w-[260px] outline-none text-sm"
               />
             ) : project.github_url ? (
@@ -330,12 +330,12 @@ export default function ProjectDetailPage() {
                 className="flex items-center justify-center sm:justify-start gap-2 px-4 py-3 rounded-xl bg-[#101010] border border-white/10 hover:bg-white/5 transition"
               >
                 <GitBranch size={15} />
-                <span className="text-sm">Github</span>
+                <span className="text-sm">GitHub</span>
               </a>
             ) : (
               <div className="flex items-center justify-center sm:justify-start gap-2 px-4 py-3 rounded-xl bg-[#101010] border border-white/10 text-white/45">
                 <GitBranch size={15} />
-                <span className="text-sm">No Link</span>
+                <span className="text-sm">Nenhum Link</span>
               </div>
             )}
           </div>
@@ -344,7 +344,7 @@ export default function ProjectDetailPage() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Code2 size={15} className="text-white/70" />
-              <p className="text-sm font-semibold">Technologies Used</p>
+              <p className="text-sm font-semibold">Tecnologias Usadas</p>
             </div>
 
             {editMode ? (
@@ -448,7 +448,7 @@ export default function ProjectDetailPage() {
           >
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={15} className="text-white/70" />
-              <p className="text-sm font-semibold">Key Features</p>
+              <p className="text-sm font-semibold">Principais Funcionalidades</p>
             </div>
 
             {editMode ? (
@@ -485,14 +485,14 @@ export default function ProjectDetailPage() {
               onClick={handleUpdate}
               className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white text-black font-medium hover:opacity-90 transition"
             >
-              Save
+              Salvar
             </button>
 
             <button
               onClick={() => setEditMode(false)}
               className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/5 transition"
             >
-              Cancel
+              Cancelar
             </button>
           </>
         ) : (
@@ -501,14 +501,14 @@ export default function ProjectDetailPage() {
               onClick={() => setEditMode(true)}
               className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/5 transition"
             >
-              Edit
+              Editar
             </button>
 
             <button
               onClick={handleDelete}
               className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-red-500 hover:bg-red-600 transition"
             >
-              Delete
+              Deletar
             </button>
           </>
         )}

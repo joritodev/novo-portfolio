@@ -24,7 +24,7 @@ export default function LayoutWrapper({
             fontSize: "12px",
           }}
         >
-          © 2026 Rifqi Muhammad Aliya. All rights reserved.
+          © 2026 João Montenegro - Todos os direitos reservados.
         </div>
       )}
     </>

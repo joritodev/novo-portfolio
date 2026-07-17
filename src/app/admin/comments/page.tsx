@@ -56,12 +56,12 @@ export default function AdminCommentsPage() {
 
   const deleteComment = async (id: number) => {
     const result = await Swal.fire({
-      title: "Delete Comment?",
-      text: "This action cannot be undone.",
+      title: "Deletar Comentário?",
+      text: "Esta ação não pode ser desfeita.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Deletar",
+      cancelButtonText: "Cancelar",
       background: "#0f0f0f",
       color: "#fff",
       confirmButtonColor: "#ef4444",
@@ -75,8 +75,8 @@ export default function AdminCommentsPage() {
     setComments((prev) => prev.filter((item) => item.id !== id));
 
     Swal.fire({
-      title: "Deleted",
-      text: "Comment removed successfully",
+      title: "Deletado",
+      text: "Comentário removido com sucesso",
       icon: "success",
       timer: 1600,
       showConfirmButton: false,
@@ -185,10 +185,10 @@ export default function AdminCommentsPage() {
           {/* HEADER */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">Comments</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">Comentários</h1>
 
               <p className="text-sm text-white/40 mt-1">
-                Manage portfolio comments
+                Gerenciar comentários do portfólio
               </p>
             </div>
 
@@ -197,7 +197,7 @@ export default function AdminCommentsPage() {
               className="h-11 px-5 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] transition flex items-center justify-center gap-2 text-sm w-full sm:w-fit"
             >
               <RefreshCcw size={14} />
-              Refresh
+              Atualizar
             </button>
           </div>
 
@@ -205,12 +205,12 @@ export default function AdminCommentsPage() {
           <div className="space-y-4">
             {loading ? (
               <div className="rounded-3xl border border-white/10 bg-white/[0.03] py-20 text-center text-white/40">
-                Loading comments...
+                Carregando comentários...
               </div>
             ) : comments.length === 0 ? (
               <div className="rounded-3xl border border-white/10 bg-white/[0.03] py-20 flex flex-col items-center gap-3 text-white/40">
                 <MessageSquare size={28} />
-                No comments yet
+                Nenhum comentário ainda
               </div>
             ) : (
               comments.map((comment) => (

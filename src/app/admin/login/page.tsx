@@ -29,7 +29,7 @@ export default function LoginPage() {
     setSuccessMsg("");
 
     if (!email || !password) {
-      setErrorMsg("Please fill email and password");
+      setErrorMsg("Por favor, preencha o email e a senha");
       return;
     }
 
@@ -43,9 +43,9 @@ export default function LoginPage() {
     setLoading(false);
 
     if (error) {
-      setErrorMsg("Invalid email or password");
+      setErrorMsg("Email ou senha inválidos");
     } else {
-      setSuccessMsg("Login success, redirecting...");
+      setSuccessMsg("Login realizado com sucesso, redirecionando...");
       setTimeout(() => {
         router.push("/admin/dashboard");
       }, 800);
@@ -68,11 +68,11 @@ export default function LoginPage() {
             </div>
 
             <h1 className="text-2xl font-bold text-white">
-              Admin Login
+              Login do Administrador
             </h1>
 
             <p className="text-sm text-white/40 mt-2">
-              Login to access dashboard panel
+              Faça login para acessar o painel de controle
             </p>
           </div>
 
@@ -104,7 +104,7 @@ export default function LoginPage() {
 
               <input
                 type="email"
-                placeholder="masukan email"
+                placeholder="digite seu email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full h-[56px] rounded-2xl bg-[#0c0c0c] border border-white/10 pl-12 pr-4 text-white outline-none focus:border-white/20 transition"
@@ -126,7 +126,7 @@ export default function LoginPage() {
 
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="masukan password"
+                placeholder="digite sua senha"
                 value={password}
                 onChange={(e) =>
                   setPassword(e.target.value)
@@ -162,10 +162,10 @@ export default function LoginPage() {
                   size={18}
                   className="animate-spin"
                 />
-                Signing In...
+                Entrando...
               </>
             ) : (
-              "Login"
+              "Entrar"
             )}
           </button>
         </div>

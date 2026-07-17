@@ -134,7 +134,7 @@ export default function WelcomeScreen() {
                 letterSpacing: '-0.05em',
               }}
             >
-              Welcome
+              Bem-vindo
             </motion.span>
 
             {/* to my */}
@@ -152,7 +152,7 @@ export default function WelcomeScreen() {
                 letterSpacing: '-0.05em',
               }}
             >
-              to my
+              ao meu portfólio
             </motion.span>
           </div>
 
@@ -175,7 +175,7 @@ export default function WelcomeScreen() {
               whiteSpace: 'nowrap',
             }}
           >
-            Portfolio Website
+            Portfólio Web
           </motion.h1>
         </div>
 
@@ -199,7 +199,7 @@ export default function WelcomeScreen() {
     color: 'rgba(255,255,255,0.7)',
   }}
 >
-  www.rifqi.vercel.app
+  www.joaomontenegro.com
 </motion.div>
       </motion.div>
     </div>

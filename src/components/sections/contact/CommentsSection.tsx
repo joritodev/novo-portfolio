@@ -79,11 +79,11 @@ export default function CommentsSection() {
       {/* HEADER */}
       <div className="mb-5 md:mb-6">
         <h3 className="text-xl md:text-2xl font-semibold mb-1">
-          Comments
+          Comentários
         </h3>
 
         <p className="text-xs md:text-sm text-white/40">
-          Leave your thoughts here
+          Deixe suas ideias aqui
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export default function CommentsSection() {
           variants={itemVariants}
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Your Name"
+          placeholder="Seu Nome"
           className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 md:py-4 outline-none focus:border-white"
         />
 
@@ -108,7 +108,7 @@ export default function CommentsSection() {
           rows={4}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Your Comment"
+          placeholder="Seu Comentário"
           className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 md:py-4 outline-none resize-none focus:border-white"
         />
 
@@ -119,7 +119,7 @@ export default function CommentsSection() {
           <Upload size={16} />
 
           <span className="text-xs md:text-sm text-white/65">
-            Upload Image
+            Upload Imagem
           </span>
 
           <input
@@ -151,7 +151,7 @@ export default function CommentsSection() {
           disabled={loading}
           className="w-full rounded-2xl py-3 md:py-4 bg-white/10 border border-white/10 transition-all"
         >
-          {loading ? 'Posting...' : 'Post Comment'}
+          {loading ? 'Postando...' : 'Postar Comentário'}
         </motion.button>
       </motion.div>
 
@@ -214,7 +214,7 @@ export default function CommentsSection() {
                       {item.is_pinned && (
                         <div className="flex items-center gap-1 px-2 py-[3px] rounded-full bg-purple-500/15 border border-purple-500/20 text-[10px] text-purple-300">
                           <Pin size={10} />
-                          PINNED
+                          FIXADO
                         </div>
                       )}
                     </div>

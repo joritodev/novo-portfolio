@@ -46,7 +46,7 @@ export default function ContactSection() {
     viewport={{ once: false }}
     className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4"
   >
-    Contact Me
+    Contate-me
   </motion.h1>
 
   <motion.p
@@ -63,7 +63,7 @@ export default function ContactSection() {
     viewport={{ once: false }}
     className="text-white/60 text-sm sm:text-base max-w-xl sm:max-w-2xl mx-auto leading-relaxed"
   >
-    Have something in mind? Send a message and let's connect.
+    Tem algo em mente? Envie uma mensagem e vamos nos conectar.
   </motion.p>
 </motion.div>
 
@@ -89,7 +89,7 @@ export default function ContactSection() {
       </div>
  {/* COPYRIGHT */}
 <div className="mt-20 text-center text-xs text-white/35">
-  © 2026 Rifqi Muhammad Aliya — All rights reserved.
+  © 2026 João Montenegro — Todos os direitos reservados.
 </div>
     </section>
   )

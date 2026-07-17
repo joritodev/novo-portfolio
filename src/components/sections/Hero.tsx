@@ -162,7 +162,7 @@ export default function Hero({ showApp }: HeroProps) {
             }}
           >
             <TextType
-              text={["Junior Programmer", "fresh Graduate", "Happy coding!"]}
+              text={["Programador Júnior", "fresh Graduate", "Happy coding!"]}
               typingSpeed={75}
               pauseDuration={1500}
               showCursor
@@ -197,9 +197,7 @@ export default function Hero({ showApp }: HeroProps) {
               textWrap: "pretty",
             }}
           >
-            Menciptakan website modern dengan tampilan clean, responsif, dan
-            elegan. Mengubah ide dan desain menjadi pengalaman digital yang
-            menarik dan mudah digunakan.
+            Criação de sites modernos com aparência limpa, responsiva e elegante. Transformação de ideias e designs em experiências digitais envolventes e fáceis de usar.
           </p>
         </motion.div>
 
@@ -264,7 +262,7 @@ export default function Hero({ showApp }: HeroProps) {
               color: "var(--text-muted)",
             }}
           >
-            ↓ explore my work below
+            ↓ explorar meu trabalho abaixo
           </span>
 
           <span
@@ -274,7 +272,7 @@ export default function Hero({ showApp }: HeroProps) {
               color: "var(--text-muted)",
             }}
           >
-            ↗ open to full-time & freelance opportunities
+            ↗ aberto a oportunidades de emprego & freelances
           </span>
         </motion.div>
       </div>

@@ -105,17 +105,17 @@ export default function About() {
     {
       icon: <Code size={16} />,
       value: String(projectCount),
-      title: "PROJECTS",
+      title: "PROJETOS",
     },
     {
       icon: <Award size={16} />,
       value: String(certificateCount),
-      title: "CERTIFICATES",
+      title: "CERTIFICAÇÕES",
     },
     {
       icon: <Globe size={16} />,
       value: String(projectCount + certificateCount),
-      title: "COMPLETED WORKS",
+      title: "TRABALHOS COMPLETOS",
     },
   ];
 
@@ -159,7 +159,7 @@ export default function About() {
                   letterSpacing: "0.2em",
                 }}
               >
-                ABOUT ME
+                SOBRE MIM
               </span>
             </motion.div>
 
@@ -172,9 +172,9 @@ export default function About() {
                   color: "var(--text-primary)",
                 }}
               >
-                <div>Rifqi</div>
-                <div>Muhammad</div>
-                <div>Aliya</div>
+                <div>João Victor</div>
+                <div>de Carvalho</div>
+                <div>Montenegro</div>
               </div>
             </motion.div>
 
@@ -198,10 +198,7 @@ export default function About() {
                 maxWidth: isMobile ? "100%" : "490px",
               }}
             >
-              Fresh Graduate SMK Rekayasa Perangkat Lunak lulusan 2026 dengan
-              passion di bidang frontend development dan UI modern. Berfokus
-              pada pembuatan website clean, responsif, dan visual yang kuat
-              untuk menghadirkan pengalaman digital yang optimal.
+              Desenvolvedor front-end (React + TypeScript) construindo produtos reais — incluindo o site de uma ONG que está no ar em produção. Foco em interfaces acessíveis, UX defensiva e código legível.
             </motion.p>
 
             {/* QUOTE */}
@@ -229,8 +226,7 @@ export default function About() {
                 width: "fit-content",
               }}
             >
-              “Turning ideas into clean, modern, and meaningful digital
-              experiences.”
+              “Transformando ideias em experiências digitais claras, modernas e significativas.”
             </motion.div>
 
             {/* BUTTONS */}
@@ -245,7 +241,7 @@ export default function About() {
             >
               {/* DOWNLOAD CV */}
               <a
-                href="https://drive.google.com/file/d/1cFqZ0TY0U0I51K0Tchv8E4sbOv5yAZ9x/view?usp=drive_link"
+                href="https://drive.google.com/file/d/1JybHdgU-VfPLIr6VVbrRxEP3taB--nzv/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: "none" }}
@@ -308,7 +304,7 @@ export default function About() {
                 }}
               >
                 <ArrowUpRight size={14} />
-                View Projects
+                Ver Projetos
               </button>
             </motion.div>
           </motion.div>

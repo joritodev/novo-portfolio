@@ -92,12 +92,12 @@ export default function PortfolioShowcase() {
           className="text-center mb-8"
         >
           <h1 className="text-3xl md:text-5xl font-bold mb-3">
-            Portfolio Showcase
+            Portfólio Showcase
           </h1>
 
           <p className="text-white/55 max-w-xl mx-auto text-sm md:text-base">
-            Explore my journey through projects,
-            certifications, and technical expertise.
+          Explore minha jornada através de projetos,
+          certificações e experiência técnica.
           </p>
         </motion.div>
 
@@ -125,10 +125,10 @@ export default function PortfolioShowcase() {
                 }`}
               >
                 {tab === 'projects'
-                  ? 'Projects'
+                  ? 'Projetos'
                   : tab === 'certificates'
-                  ? 'Certificates'
-                  : 'Tech Stack'}
+                  ? 'Certificações'
+                  : 'Tecnologias'}
               </button>
             ))}
           </div>

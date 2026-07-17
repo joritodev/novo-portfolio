@@ -13,7 +13,6 @@ import {
   FaLinkedinIn,
   FaInstagram,
   FaGithub,
-  FaYoutube,
   FaTiktok,
 } from 'react-icons/fa'
 
@@ -44,25 +43,13 @@ const socialLinks = [
     title: 'Instagram',
     user: '@instagram',
     icon: FaInstagram,
-    link: 'https://www.instagram.com/itsmeikky_12?igsh=ZHFpMTJ1bHQzeDAx',
-  },
-  {
-    title: 'Youtube',
-    user: '@youtube',
-    icon: FaYoutube,
-    link: 'https://youtube.com/@zettaajah?si=QRjJGD4zCQG8aIHX',
+    link: 'https://www.instagram.com/joriitoo/',
   },
   {
     title: 'Github',
     user: '@github',
     icon: FaGithub,
-    link: 'https://github.com/RifqiMuhammadAliya12',
-  },
-  {
-    title: 'TikTok',
-    user: '@tiktok',
-    icon: FaTiktok,
-    link: 'https://www.tiktok.com/@itsme.ikky_?_r=1&_t=ZS-95yAYr5PHUb',
+    link: 'https://github.com/joritodev',
   },
 ]
 
@@ -84,12 +71,12 @@ export default function ContactForm() {
         transition={{ delay: 0.05 }}
       >
         <h2 className="text-2xl md:text-3xl font-bold mb-3">
-          Hubungi Saya
+          Contate-me
         </h2>
 
         <p className="text-sm text-white/50 mb-7">
-          Feel free to reach out if you want to collaborate,
-          discuss ideas, or simply say hello.
+          Sinta-se à vontade para entrar em contato se você quiser colaborar,
+          discutir ideias, ou simplesmente dizer olá.
         </p>
       </motion.div>
 
@@ -107,7 +94,7 @@ export default function ContactForm() {
             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
 
             <input
-              placeholder="Your Name"
+              placeholder="Seu Nome"
               className="w-full rounded-2xl border border-white/15 bg-black/20 pl-12 pr-4 py-4 outline-none transition duration-200 focus:border-white focus:ring-1 focus:ring-white/40"
             />
           </div>
@@ -125,7 +112,7 @@ export default function ContactForm() {
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
 
             <input
-              placeholder="Your Email"
+              placeholder="Seu Email"
               className="w-full rounded-2xl border border-white/15 bg-black/20 pl-12 pr-4 py-4 outline-none transition duration-200 focus:border-white focus:ring-1 focus:ring-white/40"
             />
           </div>
@@ -144,7 +131,7 @@ export default function ContactForm() {
 
             <textarea
               rows={5}
-              placeholder="Your Message"
+              placeholder="Seu Mensagem"
               className="w-full rounded-2xl border border-white/15 bg-black/20 pl-12 pr-4 py-4 outline-none resize-none transition duration-200 focus:border-white focus:ring-1 focus:ring-white/40"
             />
           </div>
@@ -165,7 +152,7 @@ export default function ContactForm() {
           className="w-full rounded-2xl py-4 bg-white/10 border border-white/10 flex items-center justify-center gap-2"
         >
           <Send size={16} />
-          Send Message
+          Enviar Mensagem
         </motion.button>
       </div>
 
@@ -179,12 +166,12 @@ export default function ContactForm() {
           transition={{ delay: 0.34 }}
           className="text-sm text-white/55 mb-4"
         >
-          Connect With Me
+          Conecte-se Comigo
         </motion.p>
 
         {/* LINKEDIN */} 
         <motion.a
-          href="https://www.linkedin.com/in/rifqimuhammadaliya/"  
+          href="https://www.linkedin.com/in/joaovcmontenegro/"  
           target="_blank"
           rel="noopener noreferrer"
           variants={fieldVariants}

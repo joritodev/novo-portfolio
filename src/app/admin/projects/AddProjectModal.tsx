@@ -58,19 +58,19 @@ export default function AddProjectModal({
     e.preventDefault();
 
     if (!title.trim())
-      return showToast("Title wajib diisi");
+      return showToast("Título é obrigatório");
 
     if (!desc.trim())
-      return showToast("Description wajib diisi");
+      return showToast("Descrição é obrigatória");
 
     if (!tech.trim())
-      return showToast("Tech wajib diisi");
+      return showToast("Tecnologias são obrigatórias");
 
     if (!features.trim())
-      return showToast("Features wajib diisi");
+      return showToast("Características Principais são obrigatórias");
 
     if (images.length === 0)
-      return showToast("Upload minimal 1 gambar");
+      return showToast("Upload de pelo menos 1 imagem");
 
     setLoading(true);
 
@@ -112,7 +112,7 @@ export default function AddProjectModal({
         .single();
 
       if (error) {
-        showToast("Gagal simpan");
+        showToast("Falha ao salvar");
         setLoading(false);
         return;
       }
@@ -130,7 +130,7 @@ export default function AddProjectModal({
 
       onClose();
     } catch {
-      showToast("Terjadi error");
+      showToast("Ocorreu um erro");
     }
 
     setLoading(false);
@@ -149,11 +149,11 @@ export default function AddProjectModal({
         <div className="px-4 sm:px-6 py-4 border-b border-white/10 flex items-center justify-between shrink-0">
           <div>
             <h2 className="text-base sm:text-lg font-semibold">
-              Add Project
+              Adicionar Projeto
             </h2>
 
             <p className="text-[11px] sm:text-xs text-white/40 mt-1">
-              Simple portfolio input
+              Entrada simples para o portfólio
             </p>
           </div>
 
@@ -175,7 +175,7 @@ export default function AddProjectModal({
             {/* TITLE */}
             <div>
               <label className="text-xs text-white/50">
-                Project Title
+                Título do Projeto
               </label>
 
               <input
@@ -241,7 +241,7 @@ export default function AddProjectModal({
           {/* DESCRIPTION */}
           <div>
             <label className="text-xs text-white/50">
-              Description
+              Descrição
             </label>
 
             <textarea
@@ -276,7 +276,7 @@ export default function AddProjectModal({
 
           {/* TECH */}
           <input
-            placeholder="Technologies"
+            placeholder="Tecnologias"
             value={tech}
             onChange={(e) =>
               setTech(e.target.value)
@@ -286,7 +286,7 @@ export default function AddProjectModal({
 
           {/* FEATURES */}
           <input
-            placeholder="Key Features"
+            placeholder="Características Principais"
             value={features}
             onChange={(e) =>
               setFeatures(e.target.value)
@@ -301,7 +301,7 @@ export default function AddProjectModal({
               onClick={onClose}
               className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/5 transition text-sm"
             >
-              Cancel
+              Cancelar
             </button>
 
             <button
@@ -309,7 +309,7 @@ export default function AddProjectModal({
               disabled={loading}
               className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-white text-black font-medium hover:opacity-90 transition text-sm"
             >
-              {loading ? "Saving..." : "Save"}
+              {loading ? "Salvando..." : "Salvar"}
             </button>
           </div>
         </form>

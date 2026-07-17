@@ -81,11 +81,11 @@ export default function ProjectsPage() {
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5 mb-8">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold">
-                Projects
+                Projetos
               </h1>
 
               <p className="text-white/40 text-sm mt-1">
-                Manage your portfolio projects
+                Gerenciar seus projetos do portfólio
               </p>
             </div>
 
@@ -94,18 +94,18 @@ export default function ProjectsPage() {
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 bg-white text-black rounded-xl hover:scale-[1.02] transition"
             >
               <Plus size={16} />
-              Add Project
+              Adicionar Projeto
             </button>
           </div>
 
           {/* GRID */}
           {loading ? (
             <div className="text-white/40 text-sm">
-              Loading projects...
+              Carregando projetos...
             </div>
           ) : projects.length === 0 ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] h-[240px] flex items-center justify-center text-white/35">
-              No projects found
+              Nenhum projeto encontrado
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-5 pb-6">
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
                         ? new Date(
                             project.created_at
                           ).toLocaleDateString()
-                        : "No Date"}
+                        : "Sem Data"}
                     </span>
 
                     <button
@@ -154,7 +154,7 @@ export default function ProjectsPage() {
                       }
                       className="px-3 py-1.5 rounded-xl border border-white/10 hover:bg-white hover:text-black transition text-[12px]"
                     >
-                      Details
+                      Detalhes
                     </button>
                   </div>
                 </div>

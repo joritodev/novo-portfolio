@@ -119,12 +119,12 @@ fetchCertificates
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
-      title: "Delete Certificate?",
-      text: "Certificate yang dihapus tidak bisa dikembalikan.",
+      title: "Deletar Certificado?",
+      text: "O certificado deletado não pode ser recuperado.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Delete",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Sim, Deletar",
+      cancelButtonText: "Cancelar",
       background: "#111",
       color: "#fff",
       confirmButtonColor: "#ef4444",
@@ -140,8 +140,8 @@ fetchCertificates
       setCertificates((prev) => prev.filter((item) => item.id !== id));
 
       Swal.fire({
-        title: "Deleted!",
-        text: "Certificate berhasil dihapus.",
+        title: "Deletado!",
+        text: "Certificado deletado com sucesso.",
         icon: "success",
         timer: 1800,
         showConfirmButton: false,
@@ -150,8 +150,8 @@ fetchCertificates
       });
     } else {
       Swal.fire({
-        title: "Failed",
-        text: "Gagal menghapus certificate.",
+        title: "Falha",
+        text: "Falha ao deletar certificado.",
         icon: "error",
         background: "#111",
         color: "#fff",
@@ -177,10 +177,10 @@ fetchCertificates
           {/* HEADER */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Certificates</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold">Certificados</h1>
 
               <p className="text-sm text-white/40 mt-1">
-                Manage your certificates
+                Gerencie seus certificados
               </p>
             </div>
 
@@ -192,16 +192,16 @@ fetchCertificates
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white text-black hover:scale-[1.02] transition"
             >
               <Plus size={16} />
-              Add Certificate
+              Adicionar Certificado
             </button>
           </div>
 
           {/* CONTENT */}
           {loading ? (
-            <div className="text-white/50 text-sm">Loading certificates...</div>
+            <div className="text-white/50 text-sm">Carregando certificados...</div>
           ) : certificates.length === 0 ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] h-[240px] flex items-center justify-center text-white/35">
-              No certificates found
+              Nenhum certificado encontrado
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 pb-6">
@@ -241,7 +241,7 @@ fetchCertificates
                       className="flex-1 px-3 py-2 rounded-xl border border-white/10 hover:bg-white/10 transition flex items-center justify-center gap-2 text-sm"
                     >
                       <Pencil size={14} />
-                      Edit
+                      Editar
                     </button>
 
                     <button
@@ -265,7 +265,7 @@ fetchCertificates
             {/* HEADER */}
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg sm:text-xl font-semibold">
-                {editId ? "Edit Certificate" : "Add Certificate"}
+                {editId ? "Editar Certificado" : "Adicionar Certificado"}
               </h2>
 
               <button
@@ -288,7 +288,7 @@ fetchCertificates
                   <Upload size={24} className="text-white/50 mb-2" />
 
                   <p className="text-sm text-white/60">
-                    Upload Certificate Image
+                    Upload Imagem
                   </p>
                 </>
               )}
@@ -303,7 +303,7 @@ fetchCertificates
 
             {/* TITLE */}
             <input
-              placeholder="Certificate Title"
+              placeholder="Título do Certificado"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-[#0f0f0f] border border-white/10 outline-none mb-5 text-sm"
@@ -318,7 +318,7 @@ fetchCertificates
                 }}
                 className="w-full sm:w-auto px-4 py-3 rounded-xl border border-white/10 hover:bg-white/5"
               >
-                Cancel
+                Cancelar
               </button>
 
               <button
@@ -326,7 +326,7 @@ fetchCertificates
                 disabled={saving}
                 className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white text-black font-medium"
               >
-                {saving ? "Saving..." : "Save"}
+                {saving ? "Salvando..." : "Salvar"}
               </button>
             </div>
           </div>

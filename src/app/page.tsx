@@ -21,7 +21,7 @@ useEffect(() => {
   const currentHash = window.location.hash
   const pathname = window.location.pathname
 
-  // kalau balik dari detail ke portfolio
+  // se voltar do detalhes para o portfolio
   if (currentHash === '#portfolio') {
     setShowWelcome(false)
     setShowApp(true)
@@ -36,7 +36,7 @@ useEffect(() => {
 
   const isReload = navigationType === 'reload'
 
-  // hanya homepage yang reset intro
+  // apenas a homepage que reseta o intro
   if (isReload && pathname === '/') {
     sessionStorage.removeItem('introPlayed')
     sessionStorage.removeItem('heroPlayed')

@@ -122,12 +122,12 @@ export default function TechStackPage() {
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
-      title: "Delete Tech Stack?",
-      text: "Data yang dihapus tidak bisa dikembalikan.",
+      title: "Deletar Tech Stack?",
+      text: "Esta ação não pode ser desfeita.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Delete",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Deletar",
+      cancelButtonText: "Cancelar",
       background: "#111",
       color: "#fff",
       confirmButtonColor: "#ef4444",
@@ -148,8 +148,8 @@ export default function TechStackPage() {
       );
 
       Swal.fire({
-        title: "Deleted!",
-        text: "Tech stack berhasil dihapus.",
+        title: "Deletado!",
+        text: "Tech stack removido com sucesso.",
         icon: "success",
         timer: 1800,
         showConfirmButton: false,
@@ -158,8 +158,8 @@ export default function TechStackPage() {
       });
     } else {
       Swal.fire({
-        title: "Failed",
-        text: "Gagal menghapus tech stack.",
+        title: "Falhou",
+        text: "Erro ao deletar tech stack.",
         icon: "error",
         background: "#111",
         color: "#fff",
@@ -188,11 +188,11 @@ export default function TechStackPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold">
-                Tech Stack
+                Tech Stack Stack
               </h1>
 
               <p className="text-sm text-white/40 mt-1">
-                Manage technology stack
+                Gerenciar a stack de tecnologia
               </p>
             </div>
 
@@ -204,18 +204,18 @@ export default function TechStackPage() {
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-black hover:scale-[1.02] transition"
             >
               <Plus size={16} />
-              Add Tech
+              Adicionar Tech
             </button>
           </div>
 
           {/* GRID */}
           {loading ? (
             <div className="text-white/40 text-sm">
-              Loading...
+              Carregando...
             </div>
           ) : techStacks.length === 0 ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] h-[220px] flex items-center justify-center text-white/35 text-sm">
-              No tech stack
+              Nenhuma tech stack encontrada
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
@@ -270,7 +270,7 @@ export default function TechStackPage() {
             {/* HEADER */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg sm:text-xl font-semibold">
-                {editId ? "Edit Tech" : "Add Tech"}
+                {editId ? "Editar Tech Stack" : "Adicionar Tech Stack"}
               </h2>
 
               <button
@@ -299,7 +299,7 @@ export default function TechStackPage() {
                   />
 
                   <p className="text-sm text-white/50">
-                    Upload Logo
+                    Upload Logotipo
                   </p>
                 </>
               )}
@@ -314,7 +314,7 @@ export default function TechStackPage() {
 
             {/* INPUT */}
             <input
-              placeholder="Tech Name"
+              placeholder="Nome da Tech Stack"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-[#0f0f0f] border border-white/10 outline-none mb-5 text-sm"
@@ -329,7 +329,7 @@ export default function TechStackPage() {
                 }}
                 className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 transition"
               >
-                Cancel
+                Cancelar
               </button>
 
               <button
@@ -337,7 +337,7 @@ export default function TechStackPage() {
                 disabled={saving}
                 className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white text-black hover:opacity-90 transition"
               >
-                {saving ? "Saving..." : "Save"}
+                {saving ? "Salvando..." : "Salvar"}
               </button>
             </div>
           </div>

@@ -10,7 +10,7 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home')
   const [mounted, setMounted] = useState(false)
 
-  // 🔥 navbar muncul sekali aja
+  // 🔥 navbar aparece apenas uma vez
   const [showNavbar, setShowNavbar] = useState(false)
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function Navbar() {
     }
   }, [])
 
-  // 🔥 navbar animasi cuma pas refresh
+  // 🔥 animação da navbar apenas quando a página é recarregada
   useEffect(() => {
     const navbarPlayed = sessionStorage.getItem('navbarPlayed')
 
@@ -116,10 +116,10 @@ export default function Navbar() {
   }
 
   const navItems = [
-    { label: 'Home', id: 'home' },
-    { label: 'About', id: 'about' },
-    { label: 'Portfolio', id: 'portfolio' },
-    { label: 'Contact', id: 'contact' },
+    { label: 'Início', id: 'home' },
+    { label: 'Sobre', id: 'about' },
+    { label: 'Portfólio', id: 'portfolio' },
+    { label: 'Contato', id: 'contact' },
   ]
 
   return (
@@ -164,7 +164,7 @@ export default function Navbar() {
             letterSpacing: '0.1em',
           }}
         >
-          rifqi.dev
+          jorito.dev
         </span>
 
         {!isMobile && (
