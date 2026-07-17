@@ -8,7 +8,7 @@ export async function GET() {
   );
 
   // Faz uma query super leve apenas para registrar atividade
-  const { data, error } = await supabase.from('qualquer_tabela').select('id').limit(1);
+  const { data, error } = await supabase.from('projects').select('id').limit(1);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
