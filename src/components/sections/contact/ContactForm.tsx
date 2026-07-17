@@ -1,5 +1,7 @@
 'use client'
 
+
+import { useState, FormEvent } from 'react'
 import { motion, Variants } from 'framer-motion'
 import {
   Send,
@@ -7,13 +9,13 @@ import {
   Mail,
   MessageSquare,
   ArrowUpRight,
+  Loader2Icon,
 } from 'lucide-react'
 
 import {
   FaLinkedinIn,
   FaInstagram,
   FaGithub,
-  FaTiktok,
 } from 'react-icons/fa'
 
 const smoothEase: [number, number, number, number] = [
@@ -54,6 +56,38 @@ const socialLinks = [
 ]
 
 export default function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (response.ok) {
+        alert('Mensagem enviada com sucesso!')
+        e.currentTarget.reset()
+      } else {
+        alert('Ocorreu um erro ao enviar a mensagem.')
+      }
+    } catch (error) {
+      alert('Erro na conexão. Tente novamente mais tarde.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
   return (
     <motion.div
       initial={{ opacity: 0, x: -40 }}
@@ -81,7 +115,7 @@ export default function ContactForm() {
       </motion.div>
 
       {/* FORM */}
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* NAME */}
         <motion.div
           variants={fieldVariants}
@@ -94,6 +128,8 @@ export default function ContactForm() {
             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
 
             <input
+              name="name"
+              required
               placeholder="Seu Nome"
               className="w-full rounded-2xl border border-white/15 bg-black/20 pl-12 pr-4 py-4 outline-none transition duration-200 focus:border-white focus:ring-1 focus:ring-white/40"
             />
@@ -112,6 +148,9 @@ export default function ContactForm() {
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
 
             <input
+              name="email"
+              type="email"
+              required
               placeholder="Seu Email"
               className="w-full rounded-2xl border border-white/15 bg-black/20 pl-12 pr-4 py-4 outline-none transition duration-200 focus:border-white focus:ring-1 focus:ring-white/40"
             />
@@ -130,6 +169,8 @@ export default function ContactForm() {
             <MessageSquare className="absolute left-4 top-5 text-white/40" />
 
             <textarea
+              name="message"
+              required
               rows={5}
               placeholder="Seu Mensagem"
               className="w-full rounded-2xl border border-white/15 bg-black/20 pl-12 pr-4 py-4 outline-none resize-none transition duration-200 focus:border-white focus:ring-1 focus:ring-white/40"
@@ -139,6 +180,7 @@ export default function ContactForm() {
 
         {/* BUTTON */}
         <motion.button
+          type="submit"
           variants={fieldVariants}
           initial="hidden"
           whileInView="show"
@@ -150,11 +192,16 @@ export default function ContactForm() {
           }}
           whileTap={{ scale: 0.97 }}
           className="w-full rounded-2xl py-4 bg-white/10 border border-white/10 flex items-center justify-center gap-2"
+          disabled={isSubmitting}
         >
-          <Send size={16} />
+          {isSubmitting ? (
+            <Loader2Icon className="animate-spin" size={16} />
+          ) : (
+            <Send size={16} />
+          )}
           Enviar Mensagem
         </motion.button>
-      </div>
+      </form>
 
       {/* SOCIAL */}
       <div className="border-t border-white/10 pt-5 mt-6">
@@ -169,9 +216,9 @@ export default function ContactForm() {
           Conecte-se Comigo
         </motion.p>
 
-        {/* LINKEDIN */} 
+        {/* LINKEDIN */}
         <motion.a
-          href="https://www.linkedin.com/in/joaovcmontenegro/"  
+          href="https://www.linkedin.com/in/joaovcmontenegro/"
           target="_blank"
           rel="noopener noreferrer"
           variants={fieldVariants}
