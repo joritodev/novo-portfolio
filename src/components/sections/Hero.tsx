@@ -162,7 +162,7 @@ export default function Hero({ showApp }: HeroProps) {
             }}
           >
             <TextType
-              text={["Programador Júnior", "fresh Graduate", "Happy coding!"]}
+              text={["Programador Júnior", "Graduado", "Happy coding!"]}
               typingSpeed={75}
               pauseDuration={1500}
               showCursor
