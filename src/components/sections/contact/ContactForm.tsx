@@ -62,7 +62,8 @@ export default function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget;
+    const formData = new FormData(form)
     const data = {
       name: formData.get('name'),
       email: formData.get('email'),
@@ -78,7 +79,7 @@ export default function ContactForm() {
 
       if (response.ok) {
         alert('Mensagem enviada com sucesso!')
-        e.currentTarget.reset()
+        form.reset()
       } else {
         alert('Ocorreu um erro ao enviar a mensagem.')
       }
