@@ -2,8 +2,8 @@ import "./globals.css";
 import RefreshRedirect from '@/components/RefreshRedirect'
 
 export const metadata = {
-  title: "Rifqi Muhammad Aliya",
-  description: "Portfolio...",
+  title: "jorito.dev",
+  description: "Portfólio de João Montenegro",
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body>
         <RefreshRedirect />
         {children}
