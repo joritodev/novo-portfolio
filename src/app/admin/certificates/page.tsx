@@ -90,7 +90,22 @@ export default function CertificatesPage() {
           .getPublicUrl(fileName);
 
         imageUrl = data.publicUrl;
+      } else {
+        setSaving(false);
+        Swal.fire({
+          title: "Erro no Upload",
+          text: "Não foi possível fazer upload da imagem. Verifique o bucket 'certificates' no Supabase.",
+          icon: "error",
+          background: "#111",
+          color: "#fff",
+        });
+        return;
       }
+    }
+
+    // Impede salvar URLs temporárias blob:
+    if (imageUrl && imageUrl.startsWith("blob:")) {
+      imageUrl = "";
     }
 
     if (editId) {
