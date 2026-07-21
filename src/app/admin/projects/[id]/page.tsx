@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
+import { toCommaSeparated, toProjectList } from "@/lib/projectFields";
 import Swal from "sweetalert2";
 
 import {
@@ -39,8 +40,14 @@ export default function ProjectDetailPage() {
       .eq("id", id)
       .single();
 
+    if (!data) return;
+
     setProject(data);
-    setForm(data);
+    setForm({
+      ...data,
+      technologies: toCommaSeparated(data.technologies),
+      key_features: toCommaSeparated(data.key_features),
+    });
   };
 
   const handleDelete = async () => {
@@ -88,11 +95,26 @@ export default function ProjectDetailPage() {
   const handleUpdate = async () => {
   const { error } = await supabase
     .from("projects")
-    .update(form)
+    .update({
+      ...form,
+      technologies: toProjectList(form.technologies),
+      key_features: toProjectList(form.key_features),
+    })
     .eq("id", id);
 
   if (!error) {
-    setProject(form);
+    const updated = {
+      ...form,
+      technologies: toProjectList(form.technologies),
+      key_features: toProjectList(form.key_features),
+    };
+
+    setProject(updated);
+    setForm({
+      ...updated,
+      technologies: toCommaSeparated(updated.technologies),
+      key_features: toCommaSeparated(updated.key_features),
+    });
     setEditMode(false);
 
     Swal.fire({
@@ -121,13 +143,8 @@ export default function ProjectDetailPage() {
       </div>
     );
 
-  const tech = (form.technologies || "")
-    .split(",")
-    .filter((t: string) => t.trim() !== "");
-
-  const features = (form.key_features || "")
-    .split(",")
-    .filter((f: string) => f.trim() !== "");
+  const tech = toProjectList(form.technologies);
+  const features = toProjectList(form.key_features);
 
   const galleryImages =
     project.image_urls && Array.isArray(project.image_urls)

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
-import { Code, Award, Globe, FileText, ArrowUpRight } from "lucide-react";
+import { Code, Award, FileText, ArrowUpRight } from "lucide-react";
+// import { Briefcase } from "lucide-react"; // trabalhos completos (desativado)
 import { supabase } from "@/lib/supabase";
 
 /* ================== ANIMATION ================== */
@@ -62,6 +63,7 @@ export default function About() {
 
   const [projectCount, setProjectCount] = useState(0);
   const [certificateCount, setCertificateCount] = useState(0);
+  // const [deliveredWorkCount, setDeliveredWorkCount] = useState(0);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -86,9 +88,18 @@ export default function About() {
 
       setProjectCount(projects || 0);
       setCertificateCount(certificates || 0);
+
+      // Trabalhos completos (desativado — decidir uso depois)
+      // const { count: deliveredWorks } = await supabase
+      //   .from("projects")
+      //   .select("*", { count: "exact", head: true })
+      //   .not("live_url", "is", null)
+      //   .neq("live_url", "");
+      // setDeliveredWorkCount(deliveredWorks || 0);
     } catch {
       setProjectCount(0);
       setCertificateCount(0);
+      // setDeliveredWorkCount(0);
     }
   };
 
@@ -112,11 +123,11 @@ export default function About() {
       value: String(certificateCount),
       title: "CERTIFICAÇÕES",
     },
-    {
-      icon: <Globe size={16} />,
-      value: String(projectCount + certificateCount),
-      title: "TRABALHOS COMPLETOS",
-    },
+    // {
+    //   icon: <Briefcase size={16} />,
+    //   value: String(deliveredWorkCount),
+    //   title: "TRABALHOS PROFISSIONAIS ENTREGUES",
+    // },
   ];
 
   return (
@@ -354,7 +365,7 @@ export default function About() {
           viewport={{ once: false }}
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
             gap: 18,
             marginTop: 36,
           }}

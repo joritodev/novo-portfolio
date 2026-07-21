@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
+import { toProjectList } from '@/lib/projectFields'
 import {
   ArrowLeft,
   ChevronLeft,
@@ -54,13 +55,8 @@ export default function PortfolioDetailPage() {
     }
   }
 
-  const tech = (project?.technologies || '')
-    .split(',')
-    .filter((t: string) => t.trim() !== '')
-
-  const features = (project?.key_features || '')
-    .split(',')
-    .filter((f: string) => f.trim() !== '')
+  const tech = toProjectList(project?.technologies)
+  const features = toProjectList(project?.key_features)
 
   const galleryImages =
     project?.image_urls && Array.isArray(project.image_urls)
@@ -126,7 +122,7 @@ export default function PortfolioDetailPage() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               src={galleryImages[currentImage]}
-              className="max-w-[85vw] max-h-[80vh] rounded-3xl object-contain"
+              className="max-w-[92vw] max-h-[88vh] rounded-3xl object-contain"
             />
 
             {currentImage < galleryImages.length - 1 && (
@@ -366,7 +362,7 @@ export default function PortfolioDetailPage() {
                 }}
                 className="mb-5"
               >
-                <div className="relative rounded-[26px] overflow-hidden border border-white/10 bg-gradient-to-br from-[#111] to-[#171717] max-w-[560px] mx-auto">
+                <div className="relative rounded-[26px] overflow-hidden border border-white/10 bg-gradient-to-br from-[#111] to-[#171717] max-w-[680px] mx-auto">
                   <motion.img
                     key={currentImage}
                     initial={{ opacity: 0, x: 60 }}
@@ -377,7 +373,7 @@ export default function PortfolioDetailPage() {
                     }}
                     src={galleryImages[currentImage]}
                     onClick={() => setPreviewOpen(true)}
-                    className="w-full h-[220px] md:h-[250px] object-cover cursor-pointer"
+                    className="w-full h-[260px] sm:h-[300px] md:h-[340px] lg:h-[380px] object-cover cursor-pointer"
                   />
 
                   {currentImage > 0 && (
