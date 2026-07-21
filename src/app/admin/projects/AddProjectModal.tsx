@@ -8,10 +8,12 @@ export default function AddProjectModal({
   isOpen,
   onClose,
   onAdd,
+  nextOrder = 0,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onAdd: (data: any) => void;
+  nextOrder?: number;
 }) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -118,6 +120,7 @@ export default function AddProjectModal({
               .filter(Boolean),
             image_url: uploadedUrls[0] || null,
             image_urls: uploadedUrls,
+            sort_order: nextOrder,
           },
         ])
         .select()

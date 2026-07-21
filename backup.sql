@@ -12,6 +12,7 @@ CREATE TABLE public.certificates (
     id bigint NOT NULL,
     title text NOT NULL,
     image_url text,
+    sort_order integer,
     created_at timestamp without time zone DEFAULT now()
 );
 
@@ -56,6 +57,7 @@ CREATE TABLE public.projects (
     technologies text[] DEFAULT '{}'::text[],
     key_features text[] DEFAULT '{}'::text[],
     image_url text,
+    sort_order integer,
     created_at timestamp with time zone DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now(),
     image_urls jsonb DEFAULT '[]'::jsonb
@@ -72,6 +74,7 @@ CREATE TABLE public.tech_stack (
     id bigint NOT NULL,
     name text NOT NULL,
     logo_url text,
+    sort_order integer,
     created_at timestamp with time zone DEFAULT now()
 );
 
@@ -90,6 +93,15 @@ ON public.projects(created_at);
 
 CREATE INDEX idx_comments_created_at
 ON public.comments(created_at);
+
+CREATE INDEX idx_projects_sort_order
+ON public.projects(sort_order);
+
+CREATE INDEX idx_certificates_sort_order
+ON public.certificates(sort_order);
+
+CREATE INDEX idx_tech_stack_sort_order
+ON public.tech_stack(sort_order);
 
 -- ========================================
 -- ROW LEVEL SECURITY

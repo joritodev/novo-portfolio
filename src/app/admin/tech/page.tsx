@@ -3,6 +3,23 @@
 import { useEffect, useState, useMemo } from "react";
 import Sidebar from "@/app/admin/Sidebar";
 import { supabase } from "@/lib/supabase";
+import { persistOrder, nextSortOrder } from "@/lib/reorder";
+import SortableItem from "@/components/admin/SortableItem";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 import {
   Plus,
   Trash2,
@@ -14,6 +31,7 @@ import {
   Check,
   Image as ImageIcon,
   RefreshCw,
+  GripVertical,
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -53,6 +71,15 @@ export default function TechStackPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   useEffect(() => {
     fetchTechStacks();
     fetchLibraryLogos();
@@ -78,16 +105,28 @@ export default function TechStackPage() {
   }, []);
 
   const fetchTechStacks = async () => {
-    const { data } = await supabase.from("tech_stack").select("*");
+    const { data } = await supabase
+      .from("tech_stack")
+      .select("*")
+      .order("sort_order", { ascending: true, nullsFirst: false })
+      .order("created_at", { ascending: true });
 
-    const sorted = (data || []).sort(
-      (a, b) =>
-        new Date(a.created_at).getTime() -
-        new Date(b.created_at).getTime()
-    );
-
-    setTechStacks(sorted);
+    setTechStacks(data || []);
     setLoading(false);
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = techStacks.findIndex((t) => t.id === active.id);
+    const newIndex = techStacks.findIndex((t) => t.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reordered = arrayMove(techStacks, oldIndex, newIndex);
+    setTechStacks(reordered);
+
+    await persistOrder("tech_stack", reordered);
   };
 
   const fetchLibraryLogos = async () => {
@@ -249,6 +288,7 @@ export default function TechStackPage() {
         {
           name,
           logo_url: logoUrl,
+          sort_order: nextSortOrder(techStacks),
         },
       ]);
     }
@@ -325,7 +365,7 @@ export default function TechStackPage() {
               <h1 className="text-2xl sm:text-3xl font-bold">Tech Stack</h1>
 
               <p className="text-sm text-white/40 mt-1">
-                Gerenciar a stack de tecnologia do portfólio
+                Gerenciar a stack de tecnologia do portfólio · arraste pelo ícone para reordenar
               </p>
             </div>
 
@@ -349,50 +389,75 @@ export default function TechStackPage() {
               Nenhuma tech stack encontrada
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
-              {techStacks.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5 hover:border-white/20 transition flex flex-col justify-between"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="w-14 h-14 rounded-2xl bg-white/[0.04] border border-white/10 overflow-hidden flex items-center justify-center shrink-0 p-2.5">
-                      {item.logo_url ? (
-                        <img
-                          src={item.logo_url}
-                          alt={item.name}
-                          className="w-full h-full object-contain"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-white/[0.03]" />
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={techStacks.map((t) => t.id)}
+                strategy={rectSortingStrategy}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+                  {techStacks.map((item) => (
+                    <SortableItem key={item.id} id={item.id}>
+                      {({ attributes, listeners }) => (
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5 hover:border-white/20 transition flex flex-col justify-between h-full">
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="flex items-center gap-2 shrink-0">
+                              <button
+                                type="button"
+                                {...attributes}
+                                {...listeners}
+                                className="w-8 h-14 rounded-lg border border-white/10 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white cursor-grab active:cursor-grabbing touch-none"
+                                title="Arraste para reordenar"
+                                aria-label="Arraste para reordenar"
+                              >
+                                <GripVertical size={15} />
+                              </button>
+
+                              <div className="w-14 h-14 rounded-2xl bg-white/[0.04] border border-white/10 overflow-hidden flex items-center justify-center shrink-0 p-2.5">
+                                {item.logo_url ? (
+                                  <img
+                                    src={item.logo_url}
+                                    alt={item.name}
+                                    className="w-full h-full object-contain"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-white/[0.03]" />
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="flex gap-2 ml-3">
+                              <button
+                                onClick={() => handleEdit(item)}
+                                className="w-9 h-9 rounded-xl border border-white/10 hover:bg-white/10 flex items-center justify-center transition"
+                                title="Editar"
+                              >
+                                <Pencil size={14} />
+                              </button>
+
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 flex items-center justify-center hover:bg-red-500/20 transition"
+                                title="Deletar"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <h2 className="text-[14px] sm:text-[15px] font-medium break-words leading-relaxed text-white/90">
+                            {item.name}
+                          </h2>
+                        </div>
                       )}
-                    </div>
-
-                    <div className="flex gap-2 ml-3">
-                      <button
-                        onClick={() => handleEdit(item)}
-                        className="w-9 h-9 rounded-xl border border-white/10 hover:bg-white/10 flex items-center justify-center transition"
-                        title="Editar"
-                      >
-                        <Pencil size={14} />
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 flex items-center justify-center hover:bg-red-500/20 transition"
-                        title="Deletar"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-
-                  <h2 className="text-[14px] sm:text-[15px] font-medium break-words leading-relaxed text-white/90">
-                    {item.name}
-                  </h2>
+                    </SortableItem>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </SortableContext>
+            </DndContext>
           )}
         </div>
       </main>

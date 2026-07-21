@@ -1,9 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Pencil, X, Upload } from "lucide-react";
+import { Plus, Trash2, Pencil, X, Upload, GripVertical } from "lucide-react";
 import Sidebar from "@/app/admin/Sidebar";
 import { supabase } from "@/lib/supabase";
+import { persistOrder, nextSortOrder } from "@/lib/reorder";
+import SortableItem from "@/components/admin/SortableItem";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 import Swal from "sweetalert2";
 
 export default function CertificatesPage() {
@@ -18,6 +35,15 @@ export default function CertificatesPage() {
   const [preview, setPreview] = useState("");
 
   const [saving, setSaving] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     fetchCertificates();
@@ -46,13 +72,26 @@ export default function CertificatesPage() {
   const { data } = await supabase
     .from("certificates")
     .select("*")
-    .order("created_at", {
-      ascending: true,
-    });
+    .order("sort_order", { ascending: true, nullsFirst: false })
+    .order("created_at", { ascending: true });
 
   setCertificates(data || []);
   setLoading(false);
 };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = certificates.findIndex((c) => c.id === active.id);
+    const newIndex = certificates.findIndex((c) => c.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reordered = arrayMove(certificates, oldIndex, newIndex);
+    setCertificates(reordered);
+
+    await persistOrder("certificates", reordered);
+  };
 
   const resetForm = () => {
     setTitle("");
@@ -143,6 +182,7 @@ export default function CertificatesPage() {
           {
             title,
             image_url: imageUrl,
+            sort_order: nextSortOrder(certificates),
           },
         ]);
 
@@ -230,7 +270,7 @@ export default function CertificatesPage() {
               <h1 className="text-2xl sm:text-3xl font-bold">Certificados</h1>
 
               <p className="text-sm text-white/40 mt-1">
-                Gerencie seus certificados
+                Gerencie seus certificados · arraste pelo ícone para reordenar
               </p>
             </div>
 
@@ -254,56 +294,80 @@ export default function CertificatesPage() {
               Nenhum certificado encontrado
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 pb-6">
-              {certificates.map((item) => (
-                <div
-                  key={item.id}
-                  className="border border-white/10 bg-white/[0.03] rounded-2xl p-4 hover:border-white/25 hover:-translate-y-1 transition-all duration-300 flex flex-col"
-                >
-                  {/* IMAGE */}
-                  <div className="w-full h-[150px] rounded-xl overflow-hidden bg-white/[0.03] mb-4">
-                    {item.image_url ? (
-                      <img
-                        src={item.image_url}
-                        className="w-full h-full object-cover hover:scale-105 transition duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-white/[0.03]" />
-                    )}
-                  </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={certificates.map((c) => c.id)}
+                strategy={rectSortingStrategy}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 pb-6">
+                  {certificates.map((item) => (
+                    <SortableItem key={item.id} id={item.id}>
+                      {({ attributes, listeners }) => (
+                        <div className="relative border border-white/10 bg-white/[0.03] rounded-2xl p-4 hover:border-white/25 transition-all duration-300 flex flex-col h-full">
+                          {/* DRAG HANDLE */}
+                          <button
+                            type="button"
+                            {...attributes}
+                            {...listeners}
+                            className="absolute top-2 left-2 z-10 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white cursor-grab active:cursor-grabbing touch-none"
+                            title="Arraste para reordenar"
+                            aria-label="Arraste para reordenar"
+                          >
+                            <GripVertical size={15} />
+                          </button>
 
-                  {/* TITLE */}
-                  <h2 className="font-semibold text-[15px] mb-3 line-clamp-2 min-h-[42px]">
-                    {item.title}
-                  </h2>
+                          {/* IMAGE */}
+                          <div className="w-full h-[150px] rounded-xl overflow-hidden bg-white/[0.03] mb-4">
+                            {item.image_url ? (
+                              <img
+                                src={item.image_url}
+                                className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-white/[0.03]" />
+                            )}
+                          </div>
 
-                  {/* DATE */}
-                  <span className="text-[11px] text-white/30 mb-4">
-                    {item.created_at
-                      ? new Date(item.created_at).toLocaleDateString()
-                      : "No Date"}
-                  </span>
+                          {/* TITLE */}
+                          <h2 className="font-semibold text-[15px] mb-3 line-clamp-2 min-h-[42px]">
+                            {item.title}
+                          </h2>
 
-                  {/* ACTION */}
-                  <div className="flex gap-2 mt-auto">
-                    <button
-                      onClick={() => handleEdit(item)}
-                      className="flex-1 px-3 py-2 rounded-xl border border-white/10 hover:bg-white/10 transition flex items-center justify-center gap-2 text-sm"
-                    >
-                      <Pencil size={14} />
-                      Editar
-                    </button>
+                          {/* DATE */}
+                          <span className="text-[11px] text-white/30 mb-4">
+                            {item.created_at
+                              ? new Date(item.created_at).toLocaleDateString()
+                              : "No Date"}
+                          </span>
 
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 transition flex items-center justify-center text-red-300"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
+                          {/* ACTION */}
+                          <div className="flex gap-2 mt-auto">
+                            <button
+                              onClick={() => handleEdit(item)}
+                              className="flex-1 px-3 py-2 rounded-xl border border-white/10 hover:bg-white/10 transition flex items-center justify-center gap-2 text-sm"
+                            >
+                              <Pencil size={14} />
+                              Editar
+                            </button>
+
+                            <button
+                              onClick={() => handleDelete(item.id)}
+                              className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 transition flex items-center justify-center text-red-300"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </SortableItem>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </SortableContext>
+            </DndContext>
           )}
         </div>
       </main>
