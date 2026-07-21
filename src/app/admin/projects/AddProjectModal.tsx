@@ -94,6 +94,12 @@ export default function AddProjectModal({
         uploadedUrls.push(data.publicUrl);
       }
 
+      if (uploadedUrls.length === 0) {
+        showToast("Falha no upload das imagens. Verifique o bucket 'projects' no Supabase.");
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("projects")
         .insert([
@@ -102,8 +108,14 @@ export default function AddProjectModal({
             description: desc,
             live_url: live || null,
             github_url: github || null,
-            technologies: tech,
-            key_features: features,
+            technologies: tech
+              .split(",")
+              .map((t) => t.trim())
+              .filter(Boolean),
+            key_features: features
+              .split(",")
+              .map((f) => f.trim())
+              .filter(Boolean),
             image_url: uploadedUrls[0] || null,
             image_urls: uploadedUrls,
           },
@@ -112,7 +124,12 @@ export default function AddProjectModal({
         .single();
 
       if (error) {
-        showToast("Falha ao salvar");
+        console.error("Erro ao salvar projeto:", error);
+        showToast(
+          error.message.includes("row-level security")
+            ? "Sem permissão para salvar. Configure as políticas RLS no Supabase."
+            : "Falha ao salvar"
+        );
         setLoading(false);
         return;
       }
@@ -134,6 +151,30 @@ export default function AddProjectModal({
     }
 
     setLoading(false);
+  };
+
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const elements = Array.from(form.elements) as HTMLElement[];
+      const focusable = elements.filter(el => 
+        !(el as any).disabled && 
+        (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON') &&
+        el.getAttribute('type') !== 'hidden'
+      );
+      const index = focusable.indexOf(e.target as HTMLElement);
+      if (index > -1 && index < focusable.length - 1) {
+        // Se for o botão de submit, permite enviar
+        if (focusable[index].getAttribute('type') === 'submit') {
+          form.requestSubmit();
+        } else {
+          focusable[index + 1].focus();
+        }
+      } else if (index === focusable.length - 1) {
+        form.requestSubmit();
+      }
+    }
   };
 
   return (
@@ -168,6 +209,7 @@ export default function AddProjectModal({
         {/* FORM */}
         <form
           onSubmit={handleSubmit}
+          onKeyDown={handleFormKeyDown}
           className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5"
         >
           {/* TITLE + UPLOAD */}

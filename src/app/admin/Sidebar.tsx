@@ -13,6 +13,7 @@ import {
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -64,6 +65,42 @@ export default function Sidebar() {
     setOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutos
+
+    const checkTimeout = () => {
+      const lastActivity = localStorage.getItem("lastAdminActivity");
+      if (lastActivity && Date.now() - parseInt(lastActivity) > TIMEOUT_MS) {
+        supabase.auth.signOut().then(() => {
+          localStorage.removeItem("lastAdminActivity");
+          window.location.href = "/admin/login";
+        });
+      } else {
+        localStorage.setItem("lastAdminActivity", Date.now().toString());
+      }
+    };
+
+    // Checa ao montar (ex: quando dá F5)
+    checkTimeout();
+
+    const updateActivity = () => {
+      localStorage.setItem("lastAdminActivity", Date.now().toString());
+    };
+
+    window.addEventListener("mousemove", updateActivity);
+    window.addEventListener("keydown", updateActivity);
+    window.addEventListener("click", updateActivity);
+
+    const interval = setInterval(checkTimeout, 60000); // Verifica a cada minuto
+
+    return () => {
+      window.removeEventListener("mousemove", updateActivity);
+      window.removeEventListener("keydown", updateActivity);
+      window.removeEventListener("click", updateActivity);
+      clearInterval(interval);
+    };
+  }, []);
+
   const SidebarContent = ({
     hideTitle = false,
   }: {
@@ -100,22 +137,17 @@ export default function Sidebar() {
                     stiffness: 280,
                     damping: 20,
                   }}
-                  className={`relative overflow-hidden flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+                  className={`relative overflow-hidden flex items-center gap-3 px-4 py-3 rounded-[16px] border transition-all duration-300 group ${
                     active
-                      ? "bg-white text-black shadow-[0_0_25px_rgba(255,255,255,0.12)]"
-                      : "text-white/60 hover:text-white"
+                      ? "bg-white/[0.05] border-white/10 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+                      : "border-transparent text-white/50 hover:bg-white/[0.02] hover:border-white/5 hover:text-white"
                   }`}
                 >
-                  {/* Hover Glow */}
-                  {!active && (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 rounded-xl bg-gradient-to-r from-white/[0.06] to-transparent" />
-                  )}
-
-                  {/* Active Bar */}
+                  {/* Active Indicator */}
                   {active && (
                     <motion.div
                       layoutId="activeSidebar"
-                      className="absolute left-0 top-2 bottom-2 w-[4px] rounded-full bg-black"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-1/2 rounded-r-full bg-white/70"
                       transition={{
                         type: "spring",
                         stiffness: 350,
@@ -137,7 +169,10 @@ export default function Sidebar() {
                   </motion.div>
 
                   {/* Text */}
-                  <span className="relative z-10 text-sm font-medium tracking-wide">
+                  <span
+                    className="relative z-10 text-sm tracking-wide"
+                    style={{ fontFamily: "'DM Mono', monospace" }}
+                  >
                     {menu.name}
                   </span>
                 </motion.div>

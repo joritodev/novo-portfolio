@@ -129,6 +129,77 @@ ON public.tech_stack
 FOR SELECT
 USING (true);
 
+-- Admin (authenticated) write access
+CREATE POLICY "Allow authenticated insert projects"
+ON public.projects
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated update projects"
+ON public.projects
+FOR UPDATE
+TO authenticated
+USING (true)
+WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated delete projects"
+ON public.projects
+FOR DELETE
+TO authenticated
+USING (true);
+
+CREATE POLICY "Allow authenticated insert certificates"
+ON public.certificates
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated update certificates"
+ON public.certificates
+FOR UPDATE
+TO authenticated
+USING (true)
+WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated delete certificates"
+ON public.certificates
+FOR DELETE
+TO authenticated
+USING (true);
+
+CREATE POLICY "Allow authenticated insert tech_stack"
+ON public.tech_stack
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated update tech_stack"
+ON public.tech_stack
+FOR UPDATE
+TO authenticated
+USING (true)
+WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated delete tech_stack"
+ON public.tech_stack
+FOR DELETE
+TO authenticated
+USING (true);
+
+-- Storage buckets (run in Supabase SQL editor if uploads fail)
+-- CREATE POLICY "Allow authenticated upload projects"
+-- ON storage.objects FOR INSERT TO authenticated
+-- WITH CHECK (bucket_id = 'projects');
+--
+-- CREATE POLICY "Allow authenticated upload certificates"
+-- ON storage.objects FOR INSERT TO authenticated
+-- WITH CHECK (bucket_id = 'certificates');
+--
+-- CREATE POLICY "Allow authenticated upload tech-stack"
+-- ON storage.objects FOR INSERT TO authenticated
+-- WITH CHECK (bucket_id = 'tech-stack');
+
 -- ========================================
 -- UPDATED_AT TRIGGER
 -- ========================================

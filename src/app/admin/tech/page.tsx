@@ -144,6 +144,29 @@ export default function TechStackPage() {
     setInputTab("library");
   };
 
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const elements = Array.from(form.elements) as HTMLElement[];
+      const focusable = elements.filter(el => 
+        !(el as any).disabled && 
+        (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON') &&
+        el.getAttribute('type') !== 'hidden'
+      );
+      const index = focusable.indexOf(e.target as HTMLElement);
+      if (index > -1 && index < focusable.length - 1) {
+        if (focusable[index].getAttribute('type') === 'submit') {
+          form.requestSubmit();
+        } else {
+          focusable[index + 1].focus();
+        }
+      } else if (index === focusable.length - 1) {
+        form.requestSubmit();
+      }
+    }
+  };
+
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -377,7 +400,11 @@ export default function TechStackPage() {
       {/* MODAL */}
       {open && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center px-4 py-6">
-          <div className="w-full max-w-2xl rounded-3xl bg-[#111] border border-white/10 p-5 sm:p-6 max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+          <form 
+            onSubmit={(e) => { e.preventDefault(); handleSave(); }}
+            onKeyDown={handleFormKeyDown}
+            className="w-full max-w-2xl rounded-3xl bg-[#111] border border-white/10 p-5 sm:p-6 max-h-[90vh] flex flex-col overflow-hidden shadow-2xl"
+          >
             {/* HEADER */}
             <div className="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
               <div>
@@ -645,8 +672,7 @@ export default function TechStackPage() {
                 </button>
 
                 <button
-                  type="button"
-                  onClick={handleSave}
+                  type="submit"
                   disabled={saving || !name.trim() || !preview}
                   className="px-5 py-2.5 rounded-xl bg-white text-black hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm font-semibold flex items-center gap-2"
                 >
@@ -661,7 +687,7 @@ export default function TechStackPage() {
                 </button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       )}
     </div>

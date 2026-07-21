@@ -70,6 +70,29 @@ export default function CertificatesPage() {
     setPreview(URL.createObjectURL(file));
   };
 
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const elements = Array.from(form.elements) as HTMLElement[];
+      const focusable = elements.filter(el => 
+        !(el as any).disabled && 
+        (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON') &&
+        el.getAttribute('type') !== 'hidden'
+      );
+      const index = focusable.indexOf(e.target as HTMLElement);
+      if (index > -1 && index < focusable.length - 1) {
+        if (focusable[index].getAttribute('type') === 'submit') {
+          form.requestSubmit();
+        } else {
+          focusable[index + 1].focus();
+        }
+      } else if (index === focusable.length - 1) {
+        form.requestSubmit();
+      }
+    }
+  };
+
   const handleSave = async () => {
     if (!title.trim()) return;
 
@@ -108,28 +131,40 @@ export default function CertificatesPage() {
       imageUrl = "";
     }
 
-    if (editId) {
-      await supabase
-        .from("certificates")
-        .update({
-          title,
-          image_url: imageUrl,
-        })
-        .eq("id", editId);
-    } else {
-      await supabase.from("certificates").insert([
-        {
-          title,
-          image_url: imageUrl,
-        },
-      ]);
-    }
+    const { error } = editId
+      ? await supabase
+          .from("certificates")
+          .update({
+            title,
+            image_url: imageUrl,
+          })
+          .eq("id", editId)
+      : await supabase.from("certificates").insert([
+          {
+            title,
+            image_url: imageUrl,
+          },
+        ]);
 
     setSaving(false);
-setOpen(false);
-resetForm();
 
-fetchCertificates();
+    if (error) {
+      console.error("Erro ao salvar certificado:", error);
+      Swal.fire({
+        title: "Falha",
+        text: error.message.includes("row-level security")
+          ? "Sem permissão para salvar. Configure as políticas RLS no Supabase."
+          : "Falha ao salvar certificado.",
+        icon: "error",
+        background: "#111",
+        color: "#fff",
+      });
+      return;
+    }
+
+    setOpen(false);
+    resetForm();
+    fetchCertificates();
   };
 
   const handleDelete = async (id: number) => {
@@ -276,7 +311,11 @@ fetchCertificates();
       {/* MODAL */}
       {open && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center px-3 sm:px-4 py-4">
-          <div className="w-full max-w-md rounded-t-3xl sm:rounded-3xl bg-[#111] border border-white/10 p-5 sm:p-6 max-h-[92vh] overflow-y-auto">
+          <form 
+            onSubmit={(e) => { e.preventDefault(); handleSave(); }}
+            onKeyDown={handleFormKeyDown}
+            className="w-full max-w-md rounded-t-3xl sm:rounded-3xl bg-[#111] border border-white/10 p-5 sm:p-6 max-h-[92vh] overflow-y-auto"
+          >
             {/* HEADER */}
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg sm:text-xl font-semibold">
@@ -327,6 +366,7 @@ fetchCertificates();
             {/* BUTTON */}
             <div className="flex flex-col sm:flex-row justify-end gap-3">
               <button
+                type="button"
                 onClick={() => {
                   setOpen(false);
                   resetForm();
@@ -337,14 +377,14 @@ fetchCertificates();
               </button>
 
               <button
-                onClick={handleSave}
+                type="submit"
                 disabled={saving}
                 className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white text-black font-medium"
               >
                 {saving ? "Salvando..." : "Salvar"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
     </div>

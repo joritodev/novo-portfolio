@@ -103,10 +103,17 @@ export default function LoginPage() {
               />
 
               <input
+                id="email-input"
                 type="email"
                 placeholder="digite seu email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    document.getElementById("password-input")?.focus();
+                  }
+                }}
                 className="w-full h-[56px] rounded-2xl bg-[#0c0c0c] border border-white/10 pl-12 pr-4 text-white outline-none focus:border-white/20 transition"
               />
             </div>
@@ -125,12 +132,17 @@ export default function LoginPage() {
               />
 
               <input
+                id="password-input"
                 type={showPassword ? "text" : "password"}
                 placeholder="digite sua senha"
                 value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleLogin();
+                  }
+                }}
                 className="w-full h-[56px] rounded-2xl bg-[#0c0c0c] border border-white/10 pl-12 pr-14 text-white outline-none focus:border-white/20 transition"
               />
 
